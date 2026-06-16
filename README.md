@@ -6,7 +6,9 @@ which agencies fund whom, how award volume moves over time, and what work domina
 
 Built on the public USASpending.gov API.
 
-## How it works
+## Stage 1
+
+### How it works
 
 ContractScope queries the USASpending `spending_by_award` endpoint for a given
 recipient and reshapes the raw federal award data into clean, typed `Award`
@@ -19,3 +21,4 @@ records that the rest of the tool operates on.
 
 ## Status
 In active development.
+
