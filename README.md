@@ -6,19 +6,30 @@ which agencies fund whom, how award volume moves over time, and what work domina
 
 Built on the public USASpending.gov API.
 
-## Stage 1
+## How it works
 
-### How it works
+ContractScope ingests federal contract awards for a configurable watchlist of
+contractors, reshapes the raw API data into clean typed records, and persists them
+to a local database for querying and analysis.
 
-ContractScope queries the USASpending `spending_by_award` endpoint for a given
-recipient and reshapes the raw federal award data into clean, typed `Award`
-records that the rest of the tool operates on.
+- **Concurrent ingestion** — fetches the entire watchlist in parallel using `asyncio`
+  and `aiohttp`, so total fetch time stays close to a single request regardless of how
+  many contractors are tracked. Raw API responses are cached to avoid redundant calls.
+- **Persistence** — awards are stored in a SQLite database via SQLAlchemy, with
+  idempotent upserts keyed on each award's unique identifier, so re-running ingestion
+  refreshes data without creating duplicates.
+- **Clean architecture** — a typed `Award` domain model and a translation layer isolate
+  the messy external API from the rest of the app; a repository layer is the single
+  point of database access.
 
-- **`contractscope.models`** — the `Award` domain model: a typed representation of
-  a single federal contract award.
-- **`contractscope.ingest.client`** — `USASpendingClient`, which fetches awards for
-  a recipient (with pagination support) and returns them as `Award` objects.
+## Components
+
+- `contractscope.config` — loads the contractor watchlist.
+- `contractscope.models` — the `Award` domain model.
+- `contractscope.ingest.client` — `USASpendingClient`; sync and concurrent fetching.
+- `contractscope.storage` — SQLAlchemy schema, engine/session setup, and the repository
+  (save, load, and raw-SQL aggregate queries).
 
 ## Status
-In active development.
 
+In active development. Current focus: spending analysis and reporting.
