@@ -7,7 +7,7 @@ name = "contractscope"
 version = "0.1.0"
 description = "Track and analyze U.S. federal contract awards for a watchlist of contractors."
 requires-python = ">=3.11"
-dependencies = ["requests", "sqlalchemy", "aiohttp", "pandas"]
+dependencies = ["requests", "pytest", "sqlalchemy", "aiohttp", "pandas"]
 
 [tool.ruff]
 line-length = 100
