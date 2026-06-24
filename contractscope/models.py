@@ -23,5 +23,5 @@ class Award:
             awarding_sub_agency=raw["Awarding Sub Agency"],
             start_date=raw["Start Date"],
             end_date=raw["End Date"],
-            award_type=raw["Award Type"],
+            award_type=raw.get("Award Type"),
         )

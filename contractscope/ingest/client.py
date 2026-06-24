@@ -53,9 +53,7 @@ class USASpendingClient:
         filename = f"{safe_recipient}_limit{limit}_page{page}.json"
         return cache_dir / filename
     
-    async def search_awards_async(
-            self, session: aiohttp.ClientSession, recipient: str, *, limit: int = 100, page: int = 1
-    ) -> list[Award]:
+    async def search_awards_async(self, session: aiohttp.ClientSession, recipient: str, *, limit: int = 100, page: int = 1) -> list[Award]:
         path = self._cache_path(recipient, limit, page)
 
         if path.exists():
