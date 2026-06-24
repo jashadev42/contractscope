@@ -1,4 +1,5 @@
 # ContractScope
+![CI](https://github.com/jashadev42/contractscope/actions/workflows/ci.yml/badge.svg)
 
 A command-line tool that tracks U.S. federal contract awards for a watchlist of
 defense and intelligence contractors, stores them, and surfaces spending trends —
