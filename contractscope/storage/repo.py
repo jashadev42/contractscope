@@ -2,22 +2,35 @@ from .db import SessionLocal
 from .schema import AwardRow
 import sqlite3
 from .db import DB_PATH
+from sqlalchemy.orm import Session
 
 
 from ..models import Award
 
-def save_awards(awards: list[Award]) -> int:
-    with SessionLocal() as session:
+def save_awards(awards: list[Award], session: Session | None = None) -> int:
+    own_session = session is None
+    if own_session:
+        session = SessionLocal()
+    try:
         for award in awards:
             row = AwardRow.from_award(award)
             session.merge(row)
         session.commit()
+    finally:
+        if own_session:
+            session.close()
     return len(awards)
 
-def load_awards() -> list[Award]:
-    with SessionLocal() as session:
+def load_awards(session: Session | None = None) -> list[Award]:
+    own_session = session is None
+    if own_session:
+        session = SessionLocal()
+    try:
         rows = session.query(AwardRow).all()
-        return [row.to_award() for row in rows]
+    finally:
+        if own_session:
+            session.close()
+    return [row.to_award() for row in rows]
     
 def total_by_recipient_raw() -> list[tuple[str, float]]:
     connection = sqlite3.connect(DB_PATH)
